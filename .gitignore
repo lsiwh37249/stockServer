@@ -38,5 +38,8 @@ out/
 *.yml
 *.log
 *.xml
+*.env
+.env*
+
 build/
 gradle/caches/

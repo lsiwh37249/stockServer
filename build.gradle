@@ -37,6 +37,7 @@ dependencies {
 // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
 	testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.9'
 
+	implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '3.0.0'
 
 
 }
