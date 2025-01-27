@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-public class WebSocketRequestDto {
+public class TokenRequestDto {
 
     @Value("${spring.invest-server.grant-type}")
     private String grant_type;
@@ -17,7 +17,7 @@ public class WebSocketRequestDto {
     private String appkey;
 
     @Value("${spring.invest-server.secret-key}")
-    private String secretkey;
+    private String appsecret;
 
     public String toJson() {
         ObjectMapper mapper = new ObjectMapper();

@@ -1,6 +1,8 @@
 package stockserver;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,8 +31,14 @@ public class OauthTest {
 
     @Test
     @DisplayName("websocketkey 획득 성공")
-    void getWebSocketKeyTest(){
+    void getWebSocketKeyTest() throws JsonProcessingException {
+        System.out.println(oauthService.getWebSocketKey());
         assertNotNull(oauthService.getWebSocketKey(), "SockeyKey should not be null");
     }
 
+    @Test
+    @DisplayName("Token 획득 성공")
+    void getToken() throws JsonProcessingException {
+        assertNotNull(oauthService.getToken(), "Token should not be null");
+    }
 }
