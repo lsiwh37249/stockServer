@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import stockserver.oauth.dto.TokenRequestDto;
 import stockserver.oauth.dto.WebSocketRequestDto;
+import stockserver.redis.RedisService;
 
 @Service
 public class OauthService{
@@ -15,9 +16,11 @@ public class OauthService{
     private final WebClient webClient;
     private final WebSocketRequestDto requestDto;
     private final TokenRequestDto tokenRequestDto;
+    private final RedisService redisService;
 
     @Autowired
-    public OauthService(WebSocketRequestDto requestDto, TokenRequestDto tokenRequestDto) {
+    public OauthService(WebSocketRequestDto requestDto, TokenRequestDto tokenRequestDto, RedisService redisService) {
+        this.redisService = redisService;
         this.webClient = WebClient.builder()
                 .baseUrl("https://openapi.koreainvestment.com:9443")
                 .build();
@@ -48,7 +51,11 @@ public class OauthService{
 
     public String getToken() throws JsonProcessingException{
         TokenRequestDto tokenRequestDto = this.tokenRequestDto;
+        RedisService redisService = this.redisService;
         System.out.println(tokenRequestDto.toJson());
+
+        //토큰 안에 만료 시각이 지금보다 늦다? 그리면 다시 요청하고 그렇지 않으면 accessToken값 요처
+
         String response = String.valueOf(webClient.post()
                 .uri("/oauth2/tokenP") // 요청 URI
                 .header("content-type" , "application/json")
@@ -62,6 +69,10 @@ public class OauthService{
         ObjectMapper objectMapper = new ObjectMapper();
         // JSON 파싱
         JsonNode jsonNode = objectMapper.readTree(response);
+
+        //redis에 저장하기
+
+
         return jsonNode.get("token_type").asText() + " " + jsonNode.get("access_token").asText();
     }
 }

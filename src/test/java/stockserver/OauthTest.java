@@ -11,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.reactive.socket.server.WebSocketService;
 import stockserver.oauth.dto.WebSocketRequestDto;
 import stockserver.oauth.service.OauthService;
+import stockserver.redis.RedisService;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
@@ -22,6 +24,8 @@ public class OauthTest {
     private OauthService oauthService;
     @Autowired
     private WebSocketRequestDto webSocketRequestDto;
+    @Autowired
+    private RedisService redisService;
 
     @Test
     @DisplayName("value 작동 성공")
@@ -40,5 +44,12 @@ public class OauthTest {
     @DisplayName("Token 획득 성공")
     void getToken() throws JsonProcessingException {
         assertNotNull(oauthService.getToken(), "Token should not be null");
+    }
+
+    @Test
+    @DisplayName("redis 테스트")
+    void setDataRedis() throws JsonProcessingException {
+        redisService.insert("test1", "test2");
+        assertEquals(redisService.read("test1"), "test2");
     }
 }
