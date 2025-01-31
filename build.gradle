@@ -42,6 +42,10 @@ dependencies {
 	implementation group: 'io.github.cdimascio', name: 'dotenv-java', version: '3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	//redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+
 }
 
 tasks.named('test') {
