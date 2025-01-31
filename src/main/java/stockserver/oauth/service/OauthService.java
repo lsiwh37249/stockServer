@@ -11,10 +11,10 @@ import stockserver.oauth.dto.WebSocketRequestDto;
 import stockserver.redis.RedisService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
-public class
-OauthService{
+public class OauthService{
 
     private final WebClient webClient;
     private final WebSocketRequestDto requestDto;
@@ -82,7 +82,8 @@ OauthService{
 
         try {
             JsonNode jsonNode = objectMapper.readTree(token);
-            LocalDateTime tokenExpired = LocalDateTime.parse(jsonNode.get("access_token_token_expired").asText());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime tokenExpired = LocalDateTime.parse(jsonNode.get("access_token_token_expired").asText(),formatter);
             System.out.println(tokenExpired);
             if (tokenExpired.isAfter(LocalDateTime.now().plusDays(1))) {
                 return jsonNode.get("token_type").asText() + " " + jsonNode.get("access_token").asText();
